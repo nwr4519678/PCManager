@@ -1,0 +1,1034 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:PCManager.UI.ViewModels"
+        xmlns:lvc="using:LiveChartsCore.SkiaSharpView.Avalonia"
+        xmlns:material="using:Material.Icons.Avalonia"
+        x:Class="PCManager.UI.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="NEXUS COMMAND — PCManager"
+        MinWidth="1100" MinHeight="700"
+        WindowStartupLocation="CenterScreen"
+        SystemDecorations="BorderOnly"
+        Background="#0F172A">
+
+  <Grid RowDefinitions="38,*">
+
+    <!-- ╔══════════════════════════════════════════════════════════════╗
+         ║  TITLEBAR                                                  ║
+         ╚══════════════════════════════════════════════════════════╝ -->
+    <Border Grid.Row="0" Background="#020C18" PointerPressed="TitleBar_PointerPressed">
+      <Grid ColumnDefinitions="*,Auto">
+
+        <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="10"
+                    VerticalAlignment="Center" Margin="14,0,0,0">
+          <Border Width="20" Height="20" CornerRadius="5" Background="#3B82F6">
+            <TextBlock Text="N" Foreground="White" FontSize="11" FontWeight="Black"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          </Border>
+          <TextBlock VerticalAlignment="Center"
+                     FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"
+                     FontSize="11" FontWeight="SemiBold" LetterSpacing="1.5">
+            <Run Text="NEXUS" Foreground="#3B82F6"/>
+            <Run Text=" COMMAND" Foreground="#94A3B8"/>
+          </TextBlock>
+          <TextBlock Text="| System Dashboard" VerticalAlignment="Center"
+                     FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"
+                     FontSize="10" Foreground="#334155"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Orientation="Horizontal">
+          <Button Classes="WinCtrl" BorderThickness="0" Width="44" Height="38"
+                  Click="MinimizeWindow_Click" Cursor="Hand">
+            <TextBlock Text="─" Foreground="#475569" FontSize="11"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          </Button>
+          <Button Classes="WinCtrl" BorderThickness="0" Width="44" Height="38"
+                  Click="MaximizeWindow_Click" Cursor="Hand">
+            <TextBlock Text="⬜" Foreground="#475569" FontSize="9"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          </Button>
+          <Button Classes="WinClose" BorderThickness="0" Width="44" Height="38"
+                  Click="CloseWindow_Click" Cursor="Hand">
+            <TextBlock Text="✕" Foreground="#475569" FontSize="11"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          </Button>
+        </StackPanel>
+
+      </Grid>
+    </Border>
+
+    <!-- ╔══════════════════════════════════════════════════════════════╗
+         ║  BODY : sidebar (70px) + content (*)                      ║
+         ╚══════════════════════════════════════════════════════════╝ -->
+    <Grid Grid.Row="1" ColumnDefinitions="70,*">
+
+      <!-- ══════════════════════════════════════════════════════════
+           SIDEBAR
+      ═══════════════════════════════════════════════════════════ -->
+      <Border Grid.Column="0"
+              Background="#07111D"
+              BorderBrush="#1E293B"
+              BorderThickness="0,0,1,0">
+        <Grid RowDefinitions="*,Auto">
+
+          <!-- Top: nav buttons -->
+          <StackPanel Grid.Row="0" Spacing="4"
+                      HorizontalAlignment="Center"
+                      Margin="0,16,0,0">
+
+            <!-- Dashboard with alert badge -->
+            <Panel>
+              <ToggleButton Classes="NavIconBtn"
+                            ToolTip.Tip="Dashboard"
+                            IsChecked="{Binding IsDashboardTab, Mode=OneWay}"
+                            Command="{Binding NavigateToTabCommand}"
+                            CommandParameter="0">
+                <material:MaterialIcon Kind="ViewDashboard" Width="22" Height="22"
+                                       VerticalAlignment="Center" HorizontalAlignment="Center"/>
+              </ToggleButton>
+              <Border Width="14" Height="14" CornerRadius="7"
+                      Background="#EF4444"
+                      HorizontalAlignment="Right" VerticalAlignment="Top"
+                      Margin="0,4,4,0"
+                      IsVisible="{Binding HasAlerts}" ZIndex="10">
+                <TextBlock FontSize="8" FontWeight="Black" Foreground="White"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                           Text="{Binding TotalAlerts}"/>
+              </Border>
+            </Panel>
+
+            <!-- Processes -->
+            <ToggleButton Classes="NavIconBtn"
+                          ToolTip.Tip="Processes"
+                          IsChecked="{Binding IsProcessesTab, Mode=OneWay}"
+                          Command="{Binding NavigateToTabCommand}"
+                          CommandParameter="1">
+              <material:MaterialIcon Kind="FormatListBulleted" Width="22" Height="22"
+                                     VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </ToggleButton>
+
+            <!-- Network -->
+            <ToggleButton Classes="NavIconBtn"
+                          ToolTip.Tip="Network"
+                          IsChecked="{Binding IsNetworkTab, Mode=OneWay}"
+                          Command="{Binding NavigateToTabCommand}"
+                          CommandParameter="2">
+              <material:MaterialIcon Kind="Lan" Width="22" Height="22"
+                                     VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </ToggleButton>
+
+            <!-- Database -->
+            <ToggleButton Classes="NavIconBtn"
+                          ToolTip.Tip="Database"
+                          IsChecked="{Binding IsDatabaseTab, Mode=OneWay}"
+                          Command="{Binding NavigateToTabCommand}"
+                          CommandParameter="3">
+              <material:MaterialIcon Kind="Database" Width="22" Height="22"
+                                     VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </ToggleButton>
+
+          </StackPanel>
+
+          <!-- Bottom: settings + online dot -->
+          <StackPanel Grid.Row="1" HorizontalAlignment="Center"
+                      Spacing="8" Margin="0,0,0,14">
+            <Separator Height="1" Background="#1E293B" Width="36"/>
+            <ToggleButton Classes="NavIconBtn"
+                          ToolTip.Tip="Settings"
+                          IsChecked="{Binding IsSettingsTab, Mode=OneWay}"
+                          Command="{Binding NavigateToTabCommand}"
+                          CommandParameter="4">
+              <material:MaterialIcon Kind="Cog" Width="20" Height="20"
+                                     VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </ToggleButton>
+            <Ellipse Width="6" Height="6" HorizontalAlignment="Center">
+              <Ellipse.Fill><SolidColorBrush Color="#84CC16"/></Ellipse.Fill>
+            </Ellipse>
+          </StackPanel>
+        </Grid>
+      </Border>
+
+      <!-- ══════════════════════════════════════════════════════════
+           CONTENT COLUMN
+      ═══════════════════════════════════════════════════════════ -->
+      <Grid Grid.Column="1" RowDefinitions="52,44,*">
+
+        <!-- ── HEADER (52px) ──────────────────────────────────────────── -->
+        <Border Grid.Row="0"
+                Background="#07111D"
+                BorderBrush="#1E293B"
+                BorderThickness="0,0,0,1"
+                Padding="18,0">
+          <Grid ColumnDefinitions="*,Auto">
+
+            <!-- Left: identity + uptime -->
+            <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+              <StackPanel Spacing="1" VerticalAlignment="Center" Margin="0,0,18,0">
+                <TextBlock Classes="Label" Text="TIME"/>
+                <TextBlock FontSize="15" FontWeight="Bold" Foreground="#06B6D4"
+                           FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"
+                           Text="{Binding SystemTime}"/>
+              </StackPanel>
+              <StackPanel Spacing="1" VerticalAlignment="Center" Margin="0,0,18,0">
+                <TextBlock Classes="Label" Text="DATE"/>
+                <TextBlock Classes="Body" FontSize="11" Text="{Binding SystemDate}"/>
+              </StackPanel>
+              <StackPanel Spacing="1" VerticalAlignment="Center" Margin="0,0,18,0">
+                <TextBlock Classes="Label" Text="OPERATOR"/>
+                <TextBlock Classes="Body" FontSize="11" Text="{Binding LoggedInUser}"/>
+              </StackPanel>
+              <StackPanel Spacing="1" VerticalAlignment="Center" Margin="0,0,18,0">
+                <TextBlock Classes="Label" Text="HOST"/>
+                <TextBlock Classes="Body" FontSize="11" Text="{Binding MachineName}"/>
+              </StackPanel>
+              <StackPanel Spacing="1" VerticalAlignment="Center">
+                <TextBlock Classes="Label" Text="UPTIME"/>
+                <TextBlock FontSize="11" FontWeight="SemiBold" Foreground="#84CC16"
+                           FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"
+                           Text="{Binding SystemUptime}"/>
+              </StackPanel>
+            </StackPanel>
+
+            <!-- Right: network + backend badge -->
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="14" VerticalAlignment="Center">
+              <StackPanel Spacing="1" VerticalAlignment="Center">
+                <TextBlock Classes="Label" Text="&#8679; UPLOAD"/>
+                <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="#84CC16"
+                           FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"
+                           Text="{Binding NetworkUploadSpeed}"/>
+              </StackPanel>
+              <StackPanel Spacing="1" VerticalAlignment="Center">
+                <TextBlock Classes="Label" Text="&#8681; DOWNLOAD"/>
+                <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="#06B6D4"
+                           FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"
+                           Text="{Binding NetworkDownloadSpeed}"/>
+              </StackPanel>
+              <Border CornerRadius="6" Padding="8,3" VerticalAlignment="Center"
+                      Background="#0A1E293B" BorderBrush="#20334155" BorderThickness="1">
+                <StackPanel Orientation="Horizontal" Spacing="5">
+                  <Ellipse Width="5" Height="5" VerticalAlignment="Center">
+                    <Ellipse.Fill><SolidColorBrush Color="#84CC16"/></Ellipse.Fill>
+                  </Ellipse>
+                  <TextBlock FontSize="11" FontWeight="SemiBold" Foreground="#94A3B8"
+                             FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"
+                             Text="{Binding BackendStatus}"/>
+                </StackPanel>
+              </Border>
+            </StackPanel>
+
+          </Grid>
+        </Border>
+
+        <!-- ── TAB BAR (44px) ─────────────────────────────────────────── -->
+        <Border Grid.Row="1"
+                Background="#07111D"
+                BorderBrush="#1E293B"
+                BorderThickness="0,0,0,1"
+                Padding="4,0,0,0">
+          <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch">
+
+            <ToggleButton Classes="Tab" Height="44"
+                          IsChecked="{Binding IsDashboardTab, Mode=OneWay}"
+                          Command="{Binding NavigateToTabCommand}" CommandParameter="0">
+              <StackPanel Orientation="Horizontal" Spacing="6">
+                <material:MaterialIcon Kind="ViewDashboard" Width="12" Height="12" VerticalAlignment="Center"/>
+                <TextBlock Text="Dashboard" VerticalAlignment="Center"/>
+              </StackPanel>
+            </ToggleButton>
+
+            <ToggleButton Classes="Tab" Height="44"
+                          IsChecked="{Binding IsProcessesTab, Mode=OneWay}"
+                          Command="{Binding NavigateToTabCommand}" CommandParameter="1">
+              <StackPanel Orientation="Horizontal" Spacing="6">
+                <material:MaterialIcon Kind="FormatListBulleted" Width="12" Height="12" VerticalAlignment="Center"/>
+                <TextBlock Text="Processes" VerticalAlignment="Center"/>
+              </StackPanel>
+            </ToggleButton>
+
+            <ToggleButton Classes="Tab" Height="44"
+                          IsChecked="{Binding IsNetworkTab, Mode=OneWay}"
+                          Command="{Binding NavigateToTabCommand}" CommandParameter="2">
+              <StackPanel Orientation="Horizontal" Spacing="6">
+                <material:MaterialIcon Kind="Lan" Width="12" Height="12" VerticalAlignment="Center"/>
+                <TextBlock Text="Network" VerticalAlignment="Center"/>
+              </StackPanel>
+            </ToggleButton>
+
+            <ToggleButton Classes="Tab" Height="44"
+                          IsChecked="{Binding IsDatabaseTab, Mode=OneWay}"
+                          Command="{Binding NavigateToTabCommand}" CommandParameter="3">
+              <StackPanel Orientation="Horizontal" Spacing="6">
+                <material:MaterialIcon Kind="Database" Width="12" Height="12" VerticalAlignment="Center"/>
+                <TextBlock Text="Database" VerticalAlignment="Center"/>
+              </StackPanel>
+            </ToggleButton>
+
+            <ToggleButton Classes="Tab" Height="44"
+                          IsChecked="{Binding IsSettingsTab, Mode=OneWay}"
+                          Command="{Binding NavigateToTabCommand}" CommandParameter="4">
+              <StackPanel Orientation="Horizontal" Spacing="6">
+                <material:MaterialIcon Kind="Cog" Width="12" Height="12" VerticalAlignment="Center"/>
+                <TextBlock Text="Settings" VerticalAlignment="Center"/>
+              </StackPanel>
+            </ToggleButton>
+
+          </StackPanel>
+        </Border>
+
+        <!-- ══════════════════════════════════════════════════════════
+             TAB CONTENT  (Panel: one child visible at a time)
+        ═══════════════════════════════════════════════════════════ -->
+        <Panel Grid.Row="2">
+
+          <!-- ════════════════════════════════════════════════════
+               TAB 0 — DASHBOARD
+          ════════════════════════════════════════════════════ -->
+          <ScrollViewer IsVisible="{Binding IsDashboardTab}"
+                        VerticalScrollBarVisibility="Auto"
+                        HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Margin="14,14,14,14" Spacing="12">
+
+              <!-- ── KPI STRIP (4 cards) ──────────────────────────────── -->
+              <Grid ColumnDefinitions="*,*,*,*">
+
+                <!-- CPU Card -->
+                <Border Grid.Column="0" Classes="KpiCard" Margin="0,0,12,0">
+                  <StackPanel Spacing="8">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                      <material:MaterialIcon Kind="Cpu64Bit" Width="15" Height="15" Foreground="#3B82F6"/>
+                      <TextBlock Classes="H2" Text="PROCESSOR"/>
+                    </StackPanel>
+                    <TextBlock FontSize="34" FontWeight="Black"
+                               FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"
+                               Foreground="{Binding CpuStatusBrush}"
+                               Text="{Binding CpuUsage}"/>
+                    <ProgressBar Classes="UsageBar"
+                                 Foreground="{Binding CpuStatusBrush}"
+                                 Value="{Binding CpuUsageValue}"/>
+                    <!-- CPU Temp row -->
+                    <Grid ColumnDefinitions="Auto,*,Auto">
+                      <material:MaterialIcon Grid.Column="0" Kind="Thermometer" Width="12" Height="12"
+                                             Foreground="{Binding TempStatusBrush}"
+                                             VerticalAlignment="Center" Margin="0,0,4,0"/>
+                      <TextBlock Grid.Column="1" Classes="Label" Text="CPU TEMP" VerticalAlignment="Center"/>
+                      <TextBlock Grid.Column="2" FontSize="14" FontWeight="Bold"
+                                 FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"
+                                 Foreground="{Binding TempStatusBrush}"
+                                 Text="{Binding CpuTemp}"/>
+                    </Grid>
+                    <TextBlock Classes="Body" FontSize="10" Text="{Binding CpuCores}"/>
+                  </StackPanel>
+                </Border>
+
+                <!-- GPU Card -->
+                <Border Grid.Column="1" Classes="KpiCard" Margin="0,0,12,0">
+                  <StackPanel Spacing="8">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                      <material:MaterialIcon Kind="Monitor" Width="15" Height="15" Foreground="#06B6D4"/>
+                      <TextBlock Classes="H2" Text="GPU"/>
+                    </StackPanel>
+                    <TextBlock FontSize="34" FontWeight="Black"
+                               FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"
+                               Foreground="{Binding GpuStatusBrush}"
+                               Text="{Binding GpuUsage}"/>
+                    <ProgressBar Classes="UsageBar"
+                                 Foreground="{Binding GpuStatusBrush}"
+                                 Value="{Binding GpuUsageValue}"/>
+                    <!-- GPU Temp row -->
+                    <Grid ColumnDefinitions="Auto,*,Auto">
+                      <material:MaterialIcon Grid.Column="0" Kind="Thermometer" Width="12" Height="12"
+                                             Foreground="#06B6D4"
+                                             VerticalAlignment="Center" Margin="0,0,4,0"/>
+                      <TextBlock Grid.Column="1" Classes="Label" Text="GPU TEMP" VerticalAlignment="Center"/>
+                      <TextBlock Grid.Column="2" FontSize="14" FontWeight="Bold"
+                                 FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"
+                                 Foreground="#06B6D4"
+                                 Text="{Binding GpuTemp}"/>
+                    </Grid>
+                    <!-- Fan Speed row -->
+                    <Grid ColumnDefinitions="Auto,*,Auto">
+                      <TextBlock Grid.Column="0" Text="&#9651;" FontSize="10" Foreground="#84CC16"
+                                 VerticalAlignment="Center" Margin="0,0,4,0"/>
+                      <TextBlock Grid.Column="1" Classes="Label" Text="FAN SPEED" VerticalAlignment="Center"/>
+                      <TextBlock Grid.Column="2" FontSize="12" FontWeight="SemiBold"
+                                 FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"
+                                 Foreground="#84CC16"
+                                 Text="{Binding FanSpeed}"/>
+                    </Grid>
+                  </StackPanel>
+                </Border>
+
+                <!-- RAM Card -->
+                <Border Grid.Column="2" Classes="KpiCard" Margin="0,0,12,0">
+                  <StackPanel Spacing="8">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                      <material:MaterialIcon Kind="Memory" Width="15" Height="15" Foreground="#F97316"/>
+                      <TextBlock Classes="H2" Text="MEMORY"/>
+                    </StackPanel>
+                    <TextBlock FontSize="20" FontWeight="Bold"
+                               FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"
+                               Foreground="{Binding RamStatusBrush}"
+                               Text="{Binding RamUsage}"
+                               TextWrapping="Wrap"/>
+                    <ProgressBar Classes="UsageBar"
+                                 Foreground="{Binding RamStatusBrush}"
+                                 Value="{Binding RamUsageValue}"/>
+                    <TextBlock Classes="Body" FontSize="10">
+                      <Run Text="Total: " Foreground="#475569"/>
+                      <Run Text="{Binding RamTotalGb, StringFormat={}{0:F0} GB Installed}"/>
+                    </TextBlock>
+                    <!-- Disk drives -->
+                    <Separator Height="1" Background="#1E293B" Margin="0,2"/>
+                    <TextBlock Classes="Label" Text="DRIVES"/>
+                    <ItemsControl ItemsSource="{Binding DiskDrives}">
+                      <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="vm:DiskRecord">
+                          <StackPanel Spacing="2" Margin="0,0,0,5">
+                            <Grid ColumnDefinitions="*,Auto">
+                              <TextBlock Grid.Column="0" Classes="Body" FontSize="10"
+                                         Text="{Binding Label}"
+                                         TextTrimming="CharacterEllipsis"/>
+                              <TextBlock Grid.Column="1" FontSize="9" Foreground="#3B82F6"
+                                         FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"
+                                         FontWeight="SemiBold">
+                                <Run Text="{Binding Used}"/>
+                                <Run Text="/" Foreground="#334155"/>
+                                <Run Text="{Binding Total}"/>
+                              </TextBlock>
+                            </Grid>
+                            <ProgressBar Classes="UsageBar" Foreground="#84CC16"
+                                         Height="4" Value="{Binding UsedPercent}"/>
+                          </StackPanel>
+                        </DataTemplate>
+                      </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                  </StackPanel>
+                </Border>
+
+                <!-- Network I/O Card -->
+                <Border Grid.Column="3" Classes="KpiCard">
+                  <StackPanel Spacing="8">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                      <material:MaterialIcon Kind="Lan" Width="15" Height="15" Foreground="#84CC16"/>
+                      <TextBlock Classes="H2" Text="NETWORK I/O"/>
+                    </StackPanel>
+                    <TextBlock Classes="Label" Text="&#8679; UPLOAD"/>
+                    <TextBlock FontSize="20" FontWeight="Bold"
+                               FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"
+                               Foreground="#84CC16"
+                               Text="{Binding NetworkUploadSpeed}"/>
+                    <TextBlock Classes="Label" Text="&#8681; DOWNLOAD"/>
+                    <TextBlock FontSize="20" FontWeight="Bold"
+                               FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"
+                               Foreground="#06B6D4"
+                               Text="{Binding NetworkDownloadSpeed}"/>
+                    <Separator Height="1" Background="#1E293B"/>
+                    <Grid ColumnDefinitions="*,Auto">
+                      <TextBlock Grid.Column="0" Classes="Label" Text="LATENCY" VerticalAlignment="Center"/>
+                      <TextBlock Grid.Column="1" FontSize="14" FontWeight="Bold"
+                                 FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"
+                                 Foreground="#84CC16"
+                                 Text="{Binding NetworkLatency}"/>
+                    </Grid>
+                  </StackPanel>
+                </Border>
+
+              </Grid>
+
+              <!-- ── CHARTS ROW ────────────────────────────────────────── -->
+              <Grid ColumnDefinitions="*,*" MinHeight="190">
+
+                <!-- CPU Chart -->
+                <Border Grid.Column="0" Classes="Card" Padding="14,10" Margin="0,0,12,0">
+                  <Grid RowDefinitions="Auto,*">
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="8" Margin="0,0,0,6">
+                      <material:MaterialIcon Kind="ChartLine" Width="13" Height="13" Foreground="#3B82F6"/>
+                      <TextBlock Classes="H2" Text="CPU LOAD — 60s"/>
+                      <Border CornerRadius="4" Padding="6,2" Margin="2,0,0,0"
+                              Background="#123B82F6" BorderBrush="#303B82F6" BorderThickness="1">
+                        <TextBlock FontSize="10" FontWeight="Bold" Foreground="#3B82F6"
+                                   FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"
+                                   Text="{Binding CpuUsage}"/>
+                      </Border>
+                    </StackPanel>
+                    <lvc:CartesianChart Grid.Row="1"
+                                        Series="{Binding CpuSeries}"
+                                        XAxes="{x:Null}" YAxes="{x:Null}"
+                                        TooltipPosition="Hidden"
+                                        LegendPosition="Hidden"
+                                        AnimationsSpeed="0:0:0.3"/>
+                  </Grid>
+                </Border>
+
+                <!-- RAM Chart -->
+                <Border Grid.Column="1" Classes="Card" Padding="14,10">
+                  <Grid RowDefinitions="Auto,*">
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="8" Margin="0,0,0,6">
+                      <material:MaterialIcon Kind="ChartLine" Width="13" Height="13" Foreground="#F97316"/>
+                      <TextBlock Classes="H2" Text="MEMORY — 60s"/>
+                      <Border CornerRadius="4" Padding="6,2" Margin="2,0,0,0"
+                              Background="#12F97316" BorderBrush="#30F97316" BorderThickness="1">
+                        <TextBlock FontSize="10" FontWeight="Bold" Foreground="#F97316"
+                                   FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"
+                                   Text="{Binding RamUsage}"/>
+                      </Border>
+                    </StackPanel>
+                    <lvc:CartesianChart Grid.Row="1"
+                                        Series="{Binding RamSeries}"
+                                        XAxes="{x:Null}" YAxes="{x:Null}"
+                                        TooltipPosition="Hidden"
+                                        LegendPosition="Hidden"
+                                        AnimationsSpeed="0:0:0.3"/>
+                  </Grid>
+                </Border>
+
+              </Grid>
+
+              <!-- ── BOTTOM ROW: System Info | Docker | Alerts ──────────── -->
+              <Grid ColumnDefinitions="*,*,270">
+
+                <!-- System Info + Quick Actions -->
+                <Border Grid.Column="0" Classes="Card" Margin="0,0,12,0">
+                  <StackPanel Spacing="10">
+
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                      <material:MaterialIcon Kind="Monitor" Width="13" Height="13" Foreground="#3B82F6"/>
+                      <TextBlock Classes="H2" Text="SYSTEM INFO"/>
+                    </StackPanel>
+                    <Separator Height="1" Background="#1E293B"/>
+
+                    <Grid ColumnDefinitions="68,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+                      <TextBlock Grid.Row="0" Grid.Column="0" Classes="Label" Text="OS"
+                                 VerticalAlignment="Center" Margin="0,0,0,6"/>
+                      <TextBlock Grid.Row="0" Grid.Column="1" Classes="Body" FontSize="10"
+                                 Text="{Binding OsInfo}" TextWrapping="Wrap"/>
+                      <TextBlock Grid.Row="1" Grid.Column="0" Classes="Label" Text="BUILD"
+                                 VerticalAlignment="Center" Margin="0,0,0,6"/>
+                      <TextBlock Grid.Row="1" Grid.Column="1" FontSize="10" FontWeight="SemiBold"
+                                 Foreground="#3B82F6"
+                                 FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"
+                                 Text="{Binding OsBuild}"/>
+                      <TextBlock Grid.Row="2" Grid.Column="0" Classes="Label" Text="CPU"
+                                 VerticalAlignment="Center" Margin="0,0,0,6"/>
+                      <TextBlock Grid.Row="2" Grid.Column="1" Classes="Body" FontSize="10"
+                                 Text="{Binding CpuName}" TextWrapping="Wrap"/>
+                      <TextBlock Grid.Row="3" Grid.Column="0" Classes="Label" Text="CORES"
+                                 VerticalAlignment="Center" Margin="0,0,0,6"/>
+                      <TextBlock Grid.Row="3" Grid.Column="1" FontSize="10" FontWeight="SemiBold"
+                                 Foreground="#84CC16"
+                                 FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"
+                                 Text="{Binding CpuCores}"/>
+                      <TextBlock Grid.Row="4" Grid.Column="0" Classes="Label" Text="HOST"
+                                 VerticalAlignment="Center"/>
+                      <TextBlock Grid.Row="4" Grid.Column="1" Classes="Body" FontSize="10"
+                                 Text="{Binding MachineName}"/>
+                    </Grid>
+
+                    <Separator Height="1" Background="#1E293B"/>
+                    <TextBlock Classes="Label" Text="QUICK ACTIONS"/>
+                    <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto">
+                      <Button Grid.Row="0" Grid.Column="0" Classes="Danger" Margin="0,0,4,4"
+                              FontSize="10" HorizontalAlignment="Stretch"
+                              Command="{Binding KillHeavyProcCommand}">KILL TOP</Button>
+                      <Button Grid.Row="0" Grid.Column="1" Classes="Primary" Margin="4,0,0,4"
+                              FontSize="10" HorizontalAlignment="Stretch"
+                              Command="{Binding PurgeTempCommand}">PURGE TEMP</Button>
+                      <Button Grid.Row="1" Grid.Column="0" Classes="Lime" Margin="0,0,4,0"
+                              FontSize="10" HorizontalAlignment="Stretch"
+                              Command="{Binding OptimizeRamCommand}">OPT RAM</Button>
+                      <Button Grid.Row="1" Grid.Column="1" Classes="Ghost" Margin="4,0,0,0"
+                              FontSize="10" HorizontalAlignment="Stretch"
+                              Command="{Binding ScanNetworkCommand}">SCAN NET</Button>
+                    </Grid>
+
+                  </StackPanel>
+                </Border>
+
+                <!-- Docker Containers (embedded in Dashboard) -->
+                <Border Grid.Column="1" Classes="Card" Margin="0,0,12,0">
+                  <Grid RowDefinitions="Auto,Auto,*">
+
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="8" Margin="0,0,0,8">
+                      <material:MaterialIcon Kind="Docker" Width="13" Height="13" Foreground="#06B6D4"/>
+                      <TextBlock Classes="H2" Text="DOCKER CONTAINERS"/>
+                      <Border CornerRadius="4" Padding="5,2" Margin="4,0,0,0"
+                              Background="#1206B6D4" BorderBrush="#3006B6D4" BorderThickness="1">
+                        <TextBlock FontSize="9" FontWeight="Bold" Foreground="#06B6D4"
+                                   FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"
+                                   Text="{Binding DockerContainers.Count, StringFormat={}{0} containers}"/>
+                      </Border>
+                    </StackPanel>
+                    <Separator Grid.Row="1" Height="1" Background="#1E293B" Margin="0,0,0,8"/>
+
+                    <ScrollViewer Grid.Row="2"
+                                  VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Disabled">
+                      <ItemsControl ItemsSource="{Binding DockerContainers}">
+                        <ItemsControl.ItemsPanel>
+                          <ItemsPanelTemplate>
+                            <StackPanel Spacing="8" Orientation="Vertical"/>
+                          </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                          <DataTemplate DataType="vm:DockerContainerRecord">
+                            <Border CornerRadius="8" Padding="10,8"
+                                    Background="#0A334155"
+                                    BorderBrush="#1E293B" BorderThickness="1">
+                              <Grid ColumnDefinitions="*,Auto">
+                                <StackPanel Grid.Column="0" Spacing="2">
+                                  <TextBlock FontSize="12" FontWeight="SemiBold"
+                                             Foreground="#F1F5F9"
+                                             FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"
+                                             Text="{Binding Name}"
+                                             TextTrimming="CharacterEllipsis"/>
+                                  <TextBlock Classes="Body" FontSize="10"
+                                             Text="{Binding Image}"
+                                             TextTrimming="CharacterEllipsis"/>
+                                  <TextBlock FontSize="10" Foreground="#06B6D4"
+                                             FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"
+                                             Text="{Binding Ports}"/>
+                                  <TextBlock Classes="Label" FontSize="9"
+                                             Text="{Binding Uptime}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="4">
+                                  <Border CornerRadius="5" Padding="6,2" IsVisible="{Binding IsRunning}"
+                                          Background="#1284CC16" BorderBrush="#3084CC16" BorderThickness="1">
+                                    <StackPanel Orientation="Horizontal" Spacing="3">
+                                      <Ellipse Width="5" Height="5" Fill="#84CC16" VerticalAlignment="Center"/>
+                                      <TextBlock Text="RUN" FontSize="9" FontWeight="Bold"
+                                                 Foreground="#84CC16"
+                                                 FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"/>
+                                    </StackPanel>
+                                  </Border>
+                                  <Border CornerRadius="5" Padding="6,2" IsVisible="{Binding IsStopped}"
+                                          Background="#12EF4444" BorderBrush="#30EF4444" BorderThickness="1">
+                                    <StackPanel Orientation="Horizontal" Spacing="3">
+                                      <Ellipse Width="5" Height="5" Fill="#EF4444" VerticalAlignment="Center"/>
+                                      <TextBlock Text="STOP" FontSize="9" FontWeight="Bold"
+                                                 Foreground="#EF4444"
+                                                 FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"/>
+                                    </StackPanel>
+                                  </Border>
+                                  <Border CornerRadius="5" Padding="6,2" IsVisible="{Binding IsPaused}"
+                                          Background="#12F97316" BorderBrush="#30F97316" BorderThickness="1">
+                                    <StackPanel Orientation="Horizontal" Spacing="3">
+                                      <Ellipse Width="5" Height="5" Fill="#F97316" VerticalAlignment="Center"/>
+                                      <TextBlock Text="⏸" FontSize="9" FontWeight="Bold"
+                                                 Foreground="#F97316"
+                                                 FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"/>
+                                    </StackPanel>
+                                  </Border>
+                                </StackPanel>
+                              </Grid>
+                            </Border>
+                          </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                      </ItemsControl>
+                    </ScrollViewer>
+
+                  </Grid>
+                </Border>
+
+                <!-- System Alerts -->
+                <Border Grid.Column="2" Classes="Card">
+                  <Grid RowDefinitions="Auto,*">
+
+                    <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,0,0,8">
+                      <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="8">
+                        <material:MaterialIcon Kind="Bell" Width="13" Height="13" Foreground="#EF4444"/>
+                        <TextBlock Classes="H2" Text="ALERTS"/>
+                        <Border CornerRadius="6" Padding="5,2" Margin="2,0,0,0"
+                                Background="#12EF4444" BorderBrush="#30EF4444" BorderThickness="1"
+                                IsVisible="{Binding HasAlerts}">
+                          <TextBlock FontSize="9" FontWeight="Bold" Foreground="#EF4444"
+                                     FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"
+                                     Text="{Binding TotalAlerts}"/>
+                        </Border>
+                      </StackPanel>
+                      <Button Grid.Column="1" Classes="Ghost" Padding="6,2" FontSize="10"
+                              Command="{Binding ClearAlertsCommand}">CLR</Button>
+                    </Grid>
+
+                    <ScrollViewer Grid.Row="1"
+                                  VerticalScrollBarVisibility="Auto"
+                                  MaxHeight="240">
+                      <ItemsControl ItemsSource="{Binding SystemAlerts}">
+                        <ItemsControl.ItemsPanel>
+                          <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical" Spacing="6"/>
+                          </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                          <DataTemplate DataType="vm:SystemAlertRecord">
+                            <Border CornerRadius="7" Padding="10,8"
+                                    Background="#0A334155"
+                                    BorderBrush="{Binding SeverityBrush}"
+                                    BorderThickness="2,0,0,0">
+                              <StackPanel Spacing="2">
+                                <Grid ColumnDefinitions="*,Auto">
+                                  <TextBlock Grid.Column="0" FontSize="11" FontWeight="Bold"
+                                             FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"
+                                             Foreground="{Binding SeverityBrush}"
+                                             Text="{Binding Title}"/>
+                                  <TextBlock Grid.Column="1" Classes="Label" FontSize="9"
+                                             Text="{Binding Time}"/>
+                                </Grid>
+                                <TextBlock Classes="Body" FontSize="10"
+                                           Text="{Binding Message}"
+                                           TextWrapping="Wrap"/>
+                              </StackPanel>
+                            </Border>
+                          </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                      </ItemsControl>
+                    </ScrollViewer>
+
+                  </Grid>
+                </Border>
+
+              </Grid>
+
+            </StackPanel>
+          </ScrollViewer>
+
+          <!-- ════════════════════════════════════════════════════
+               TAB 1 — PROCESSES
+          ════════════════════════════════════════════════════ -->
+          <Grid IsVisible="{Binding IsProcessesTab}"
+                RowDefinitions="Auto,*"
+                Margin="14">
+
+            <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,0,0,12">
+              <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+                <material:MaterialIcon Kind="FormatListBulleted" Width="20" Height="20" Foreground="#3B82F6"/>
+                <TextBlock Classes="H1" Text="LIVE PROCESSES"/>
+                <Border CornerRadius="6" Padding="7,3"
+                        Background="#123B82F6" BorderBrush="#303B82F6" BorderThickness="1">
+                  <TextBlock FontSize="10" FontWeight="SemiBold" Foreground="#3B82F6"
+                             FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"
+                             Text="{Binding FilteredProcesses.Count, StringFormat={}{0} shown}"/>
+                </Border>
+              </StackPanel>
+              <TextBox Grid.Column="1" Classes="SearchBox"
+                       Width="250" VerticalAlignment="Center"
+                       Watermark="&#8981;  Search by name or PID…"
+                       Text="{Binding ProcessSearch}"/>
+            </Grid>
+
+            <Border Grid.Row="1" Classes="Card" Padding="0" ClipToBounds="True">
+              <DataGrid ItemsSource="{Binding FilteredProcesses}"
+                        AutoGenerateColumns="False"
+                        CanUserResizeColumns="True">
+                <DataGrid.Columns>
+                  <DataGridTextColumn Header="PID"        Binding="{Binding PID}"    Width="70"/>
+                  <DataGridTextColumn Header="IMAGE NAME" Binding="{Binding Name}"   Width="*"/>
+                  <DataGridTextColumn Header="STATUS"     Binding="{Binding Status}" Width="100"/>
+                  <DataGridTextColumn Header="CPU %"      Binding="{Binding CPU}"    Width="90"/>
+                  <DataGridTextColumn Header="MEMORY"     Binding="{Binding Memory}" Width="120"/>
+                </DataGrid.Columns>
+              </DataGrid>
+            </Border>
+
+          </Grid>
+
+          <!-- ════════════════════════════════════════════════════
+               TAB 2 — NETWORK
+          ════════════════════════════════════════════════════ -->
+          <Grid IsVisible="{Binding IsNetworkTab}"
+                RowDefinitions="Auto,*,Auto"
+                Margin="14">
+
+            <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,0,0,12">
+              <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+                <material:MaterialIcon Kind="Lan" Width="20" Height="20" Foreground="#3B82F6"/>
+                <TextBlock Classes="H1" Text="NETWORK MONITOR"/>
+              </StackPanel>
+              <Button Grid.Column="1" Classes="Ghost" VerticalAlignment="Center"
+                      Command="{Binding ScanNetworkCommand}">
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                  <material:MaterialIcon Kind="Magnify" Width="13" Height="13"/>
+                  <TextBlock Text="SUBNET SWEEP" VerticalAlignment="Center" FontSize="12"/>
+                </StackPanel>
+              </Button>
+            </Grid>
+
+            <Border Grid.Row="1" Classes="Card" Padding="0" ClipToBounds="True">
+              <DataGrid ItemsSource="{Binding NetworkLogs}"
+                        AutoGenerateColumns="False"
+                        CanUserResizeColumns="True">
+                <DataGrid.Columns>
+                  <DataGridTextColumn Header="TIME"       Binding="{Binding Time}"          Width="85"/>
+                  <DataGridTextColumn Header="TARGET IP"  Binding="{Binding TargetAddress}" Width="*"/>
+                  <DataGridTextColumn Header="PORT"       Binding="{Binding TargetPort}"    Width="70"/>
+                  <DataGridTextColumn Header="PING"       Binding="{Binding Ping}"          Width="70"/>
+                  <DataGridTextColumn Header="STATUS"     Binding="{Binding Status}"        Width="85"/>
+                  <DataGridTextColumn Header="OPEN PORTS" Binding="{Binding OpenPorts}"     Width="*"/>
+                </DataGrid.Columns>
+              </DataGrid>
+            </Border>
+
+            <!-- Footer stats -->
+            <Grid Grid.Row="2" ColumnDefinitions="*,*,*,*" Margin="0,10,0,0">
+              <Border Grid.Column="0" Classes="CompactCard" Margin="0,0,10,0">
+                <StackPanel Spacing="3">
+                  <TextBlock Classes="Label" Text="STATUS"/>
+                  <TextBlock FontSize="11" FontWeight="SemiBold" Foreground="#06B6D4"
+                             FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"
+                             Text="{Binding NetworkStatus}" TextWrapping="Wrap"/>
+                </StackPanel>
+              </Border>
+              <Border Grid.Column="1" Classes="CompactCard" Margin="0,0,10,0">
+                <StackPanel Spacing="3">
+                  <TextBlock Classes="Label" Text="LATENCY"/>
+                  <TextBlock FontSize="20" FontWeight="Bold" Foreground="#84CC16"
+                             FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"
+                             Text="{Binding NetworkLatency}"/>
+                </StackPanel>
+              </Border>
+              <Border Grid.Column="2" Classes="CompactCard" Margin="0,0,10,0">
+                <StackPanel Spacing="3">
+                  <TextBlock Classes="Label" Text="&#8679; UPLOAD"/>
+                  <TextBlock FontSize="14" FontWeight="SemiBold" Foreground="#84CC16"
+                             FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"
+                             Text="{Binding NetworkUploadSpeed}"/>
+                </StackPanel>
+              </Border>
+              <Border Grid.Column="3" Classes="CompactCard">
+                <StackPanel Spacing="3">
+                  <TextBlock Classes="Label" Text="&#8681; DOWNLOAD"/>
+                  <TextBlock FontSize="14" FontWeight="SemiBold" Foreground="#06B6D4"
+                             FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"
+                             Text="{Binding NetworkDownloadSpeed}"/>
+                </StackPanel>
+              </Border>
+            </Grid>
+
+          </Grid>
+
+          <!-- ════════════════════════════════════════════════════
+               TAB 3 — DATABASE
+          ════════════════════════════════════════════════════ -->
+          <ScrollViewer IsVisible="{Binding IsDatabaseTab}"
+                        VerticalScrollBarVisibility="Auto">
+            <Grid Margin="14" RowDefinitions="Auto,Auto">
+
+              <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,0,0,14">
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+                  <material:MaterialIcon Kind="Database" Width="20" Height="20" Foreground="#3B82F6"/>
+                  <TextBlock Classes="H1" Text="DATABASE TELEMETRY"/>
+                </StackPanel>
+                <Button Grid.Column="1" Classes="Ghost" VerticalAlignment="Center"
+                        Command="{Binding RunDbSecurityCheckCommand}">
+                  <StackPanel Orientation="Horizontal" Spacing="6">
+                    <material:MaterialIcon Kind="Shield" Width="13" Height="13"/>
+                    <TextBlock Text="SECURITY CHECK" VerticalAlignment="Center" FontSize="12"/>
+                  </StackPanel>
+                </Button>
+              </Grid>
+
+              <Grid Grid.Row="1" ColumnDefinitions="*,*,*">
+
+                <Border Grid.Column="0" Classes="KpiCard" Margin="0,0,12,0">
+                  <StackPanel Spacing="10">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                      <material:MaterialIcon Kind="Database" Width="14" Height="14" Foreground="#3B82F6"/>
+                      <TextBlock Classes="Label" Text="INDEXED LOGS"/>
+                    </StackPanel>
+                    <TextBlock FontSize="38" FontWeight="Black" Foreground="#3B82F6"
+                               FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"
+                               Text="{Binding TotalLogs}"/>
+                    <TextBlock Classes="Body" FontSize="10" Text="Records persisted in SQL Server"/>
+                  </StackPanel>
+                </Border>
+
+                <Border Grid.Column="1" Classes="KpiCard" Margin="0,0,12,0">
+                  <StackPanel Spacing="10">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                      <material:MaterialIcon Kind="CloudUpload" Width="14" Height="14" Foreground="#84CC16"/>
+                      <TextBlock Classes="Label" Text="LAST BACKUP"/>
+                    </StackPanel>
+                    <TextBlock FontSize="18" FontWeight="Bold" Foreground="#F1F5F9"
+                               FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"
+                               Text="{Binding LastDbBackup}" TextWrapping="Wrap"/>
+                    <TextBlock Classes="Body" FontSize="10" Text="Point-in-time recovery available"/>
+                  </StackPanel>
+                </Border>
+
+                <Border Grid.Column="2" Classes="KpiCard">
+                  <StackPanel Spacing="10">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                      <material:MaterialIcon Kind="ShieldHalfFull" Width="14" Height="14" Foreground="#84CC16"/>
+                      <TextBlock Classes="Label" Text="DB HEALTH"/>
+                    </StackPanel>
+                    <TextBlock FontSize="22" FontWeight="Black" Foreground="#84CC16"
+                               FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"
+                               Text="{Binding DbServerHealth}"/>
+                    <Border CornerRadius="5" Padding="7,3" HorizontalAlignment="Left"
+                            Background="#1284CC16" BorderBrush="#3084CC16" BorderThickness="1">
+                      <TextBlock FontSize="10" FontWeight="SemiBold" Foreground="#84CC16"
+                                 FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"
+                                 Text="AES-256 · TLS 1.3 Active"/>
+                    </Border>
+                  </StackPanel>
+                </Border>
+
+              </Grid>
+            </Grid>
+          </ScrollViewer>
+
+          <!-- ════════════════════════════════════════════════════
+               TAB 4 — SETTINGS
+          ════════════════════════════════════════════════════ -->
+          <ScrollViewer IsVisible="{Binding IsSettingsTab}"
+                        VerticalScrollBarVisibility="Auto">
+            <Grid Margin="14" RowDefinitions="Auto,Auto">
+
+              <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="10" Margin="0,0,0,14">
+                <material:MaterialIcon Kind="Cog" Width="20" Height="20" Foreground="#3B82F6"/>
+                <TextBlock Classes="H1" Text="SETTINGS &amp; CONFIGURATION"/>
+              </StackPanel>
+
+              <Grid Grid.Row="1" ColumnDefinitions="*,*,230">
+
+                <!-- Alert Thresholds -->
+                <Border Grid.Column="0" Classes="Card" Margin="0,0,12,0">
+                  <StackPanel Spacing="14">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                      <material:MaterialIcon Kind="BellRing" Width="14" Height="14" Foreground="#EF4444"/>
+                      <TextBlock Classes="H2" Text="ALERT THRESHOLDS"/>
+                    </StackPanel>
+                    <Separator Height="1" Background="#1E293B"/>
+
+                    <StackPanel Spacing="6">
+                      <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock Grid.Column="0" Classes="Label" Text="CPU ALERT"/>
+                        <TextBlock Grid.Column="1" Foreground="#3B82F6" FontSize="12" FontWeight="Bold"
+                                   FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif">
+                          <Run Text="{Binding AlertCpuThreshold, StringFormat={}{0:F0}}"/><Run Text="%"/>
+                        </TextBlock>
+                      </Grid>
+                      <Slider Minimum="50" Maximum="100" Value="{Binding AlertCpuThreshold}"
+                              TickFrequency="5" IsSnapToTickEnabled="True"/>
+                    </StackPanel>
+
+                    <StackPanel Spacing="6">
+                      <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock Grid.Column="0" Classes="Label" Text="RAM ALERT"/>
+                        <TextBlock Grid.Column="1" Foreground="#F97316" FontSize="12" FontWeight="Bold"
+                                   FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif">
+                          <Run Text="{Binding AlertRamThreshold, StringFormat={}{0:F0}}"/><Run Text="%"/>
+                        </TextBlock>
+                      </Grid>
+                      <Slider Minimum="50" Maximum="100" Value="{Binding AlertRamThreshold}"
+                              TickFrequency="5" IsSnapToTickEnabled="True"/>
+                    </StackPanel>
+
+                    <StackPanel Spacing="6">
+                      <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock Grid.Column="0" Classes="Label" Text="TEMP ALERT"/>
+                        <TextBlock Grid.Column="1" Foreground="#84CC16" FontSize="12" FontWeight="Bold"
+                                   FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif">
+                          <Run Text="{Binding AlertTempThreshold, StringFormat={}{0:F0}}"/><Run Text="°C"/>
+                        </TextBlock>
+                      </Grid>
+                      <Slider Minimum="50" Maximum="100" Value="{Binding AlertTempThreshold}"
+                              TickFrequency="5" IsSnapToTickEnabled="True"/>
+                    </StackPanel>
+
+                  </StackPanel>
+                </Border>
+
+                <!-- Performance -->
+                <Border Grid.Column="1" Classes="Card" Margin="0,0,12,0">
+                  <StackPanel Spacing="14">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                      <material:MaterialIcon Kind="Speedometer" Width="14" Height="14" Foreground="#06B6D4"/>
+                      <TextBlock Classes="H2" Text="PERFORMANCE"/>
+                    </StackPanel>
+                    <Separator Height="1" Background="#1E293B"/>
+
+                    <StackPanel Spacing="4">
+                      <TextBlock Classes="Label" Text="TELEMETRY REFRESH"/>
+                      <TextBlock FontSize="28" FontWeight="Black"
+                                 FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"
+                                 Foreground="#06B6D4">
+                        <Run Text="1"/><Run Text=" s" Foreground="#475569"/>
+                      </TextBlock>
+                      <TextBlock Classes="Body" FontSize="10" Text="CPU/RAM graphs — 1 second heartbeat"/>
+                    </StackPanel>
+                    <Separator Height="1" Background="#1E293B"/>
+                    <StackPanel Spacing="4">
+                      <TextBlock Classes="Label" Text="THERMAL SENSORS"/>
+                      <TextBlock FontSize="28" FontWeight="Black"
+                                 FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"
+                                 Foreground="#84CC16">
+                        <Run Text="3"/><Run Text=" s" Foreground="#475569"/>
+                      </TextBlock>
+                      <TextBlock Classes="Body" FontSize="10" Text="CPU/GPU temp · Fan RPM — 3 second poll"/>
+                    </StackPanel>
+                    <Separator Height="1" Background="#1E293B"/>
+                    <StackPanel Spacing="4">
+                      <TextBlock Classes="Label" Text="GC MODE"/>
+                      <TextBlock FontSize="14" FontWeight="Bold" Foreground="#3B82F6"
+                                 FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif"
+                                 Text="Server GC · Low Pause"/>
+                    </StackPanel>
+                  </StackPanel>
+                </Border>
+
+                <!-- About -->
+                <Border Grid.Column="2" Classes="Card">
+                  <StackPanel Spacing="12">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                      <material:MaterialIcon Kind="Information" Width="14" Height="14" Foreground="#3B82F6"/>
+                      <TextBlock Classes="H2" Text="ABOUT"/>
+                    </StackPanel>
+                    <Separator Height="1" Background="#1E293B"/>
+
+                    <Border Width="48" Height="48" CornerRadius="12"
+                            Background="#3B82F6" HorizontalAlignment="Left">
+                      <TextBlock Text="N" Foreground="White" FontSize="26" FontWeight="Black"
+                                 HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+
+                    <StackPanel Spacing="2">
+                      <TextBlock FontSize="15" FontWeight="Black" Foreground="#F1F5F9"
+                                 FontFamily="Inter,Segoe UI Variable,Segoe UI,sans-serif">
+                        <Run Text="NEXUS" Foreground="#3B82F6"/><Run Text=" COMMAND"/>
+                      </TextBlock>
+                      <TextBlock Classes="Body" FontSize="10" Text="Version 2.0 · Enterprise Edition"/>
+                    </StackPanel>
+
+                    <Separator Height="1" Background="#1E293B"/>
+
+                    <StackPanel Spacing="6">
+                      <StackPanel Orientation="Horizontal" Spacing="6">
+                        <Ellipse Width="5" Height="5" Fill="#3B82F6" VerticalAlignment="Center"/>
+                        <TextBlock Classes="Body" FontSize="10" Text=".NET 10 · Avalonia 11.2"/>
+                      </StackPanel>
+                      <StackPanel Orientation="Horizontal" Spacing="6">
+                        <Ellipse Width="5" Height="5" Fill="#84CC16" VerticalAlignment="Center"/>
+                        <TextBlock Classes="Body" FontSize="10" Text="SQL Server · EF Core"/>
+                      </StackPanel>
+                      <StackPanel Orientation="Horizontal" Spacing="6">
+                        <Ellipse Width="5" Height="5" Fill="#06B6D4" VerticalAlignment="Center"/>
+                        <TextBlock Classes="Body" FontSize="10" Text="Docker · ASP.NET Core"/>
+                      </StackPanel>
+                      <StackPanel Orientation="Horizontal" Spacing="6">
+                        <Ellipse Width="5" Height="5" Fill="#F97316" VerticalAlignment="Center"/>
+                        <TextBlock Classes="Body" FontSize="10" Text="LibreHardwareMonitor · LiveCharts2"/>
+                      </StackPanel>
+                    </StackPanel>
+
+                  </StackPanel>
+                </Border>
+
+              </Grid>
+            </Grid>
+          </ScrollViewer>
+
+        </Panel>
+      </Grid>
+    </Grid>
+  </Grid>
+</Window>

@@ -1,0 +1,43 @@
+Ran command: `docker-compose up -d`
+Listed directory PCManager
+Listed directory PCManager.Backend
+Viewed Program.cs:1-25
+Listed directory PCManager.UI
+Listed directory PCManager.Infrastructure
+Listed directory Migrations
+
+To run the **PC Manager** project, follow these steps in order. Since you have already successfully started the database container with Docker, you just need to initialize the database schema and start the services.
+
+### 1. Initialize the Database
+Before running the application, you need to apply the Entity Framework migrations to the SQL Server container you just started. Run this command from the root directory:
+
+```powershell
+dotnet ef database update --project PCManager.Infrastructure --startup-project PCManager.Backend
+```
+
+### 2. Run the Backend API
+The backend handles real-time telemetry and system monitoring. Open a new terminal and run:
+
+```powershell
+dotnet run --project PCManager.Backend
+```
+*The backend will start and begin monitoring your system's CPU, GPU, and Network metrics.*
+
+### 3. Run the UI (Dashboard)
+Once the backend is running, you can start the Avalonia UI dashboard:
+
+```powershell
+dotnet run --project PCManager.UI
+```
+
+---
+
+### Summary of Commands
+| Step | Action | Command |
+| :--- | :--- | :--- |
+| **1** | **Database** | `docker-compose up -d` (Already done ✅) |
+| **2** | **Migrations** | `dotnet ef database update --project PCManager.Infrastructure --startup-project PCManager.Backend` |
+| **3** | **Backend** | `dotnet run --project PCManager.Backend` |
+| **4** | **Frontend** | `dotnet run --project PCManager.UI` |
+
+**Would you like me to run the database migrations for you now?**

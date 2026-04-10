@@ -1,0 +1,405 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       DESIGN TOKENS — inline resource references
+  ═══════════════════════════════════════════════════════════════ -->
+  <Styles.Resources>
+    <SolidColorBrush x:Key="BrushBackground"    Color="#0F172A"/>
+    <SolidColorBrush x:Key="BrushSurface"       Color="#1E293B"/>
+    <SolidColorBrush x:Key="BrushSurfaceLight"  Color="#334155"/>
+    <SolidColorBrush x:Key="BrushBorder"        Color="#2D3F55"/>
+    <SolidColorBrush x:Key="BrushAccentBlue"    Color="#3B82F6"/>
+    <SolidColorBrush x:Key="BrushAccentLime"    Color="#84CC16"/>
+    <SolidColorBrush x:Key="BrushAccentOrange"  Color="#F97316"/>
+    <SolidColorBrush x:Key="BrushAccentRed"     Color="#EF4444"/>
+    <SolidColorBrush x:Key="BrushAccentCyan"    Color="#06B6D4"/>
+    <SolidColorBrush x:Key="BrushText"          Color="#F1F5F9"/>
+    <SolidColorBrush x:Key="BrushTextMuted"     Color="#64748B"/>
+    <SolidColorBrush x:Key="BrushTextSubtle"    Color="#94A3B8"/>
+    <SolidColorBrush x:Key="BrushGlass"         Color="#1A334155"/>
+    <SolidColorBrush x:Key="BrushGlassBorder"   Color="#33FFFFFF"/>
+    <SolidColorBrush x:Key="BrushTransparent"   Color="Transparent"/>
+
+    <CornerRadius x:Key="RadiusCard">14</CornerRadius>
+    <CornerRadius x:Key="RadiusSmall">8</CornerRadius>
+    <CornerRadius x:Key="RadiusButton">10</CornerRadius>
+    <CornerRadius x:Key="RadiusBadge">6</CornerRadius>
+  </Styles.Resources>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       TEXT STYLES
+  ═══════════════════════════════════════════════════════════════ -->
+  <Style Selector="TextBlock.H1">
+    <Setter Property="FontFamily" Value="Inter,Segoe UI Variable,Segoe UI,sans-serif"/>
+    <Setter Property="FontSize"   Value="20"/>
+    <Setter Property="FontWeight" Value="Bold"/>
+    <Setter Property="Foreground" Value="{StaticResource BrushText}"/>
+  </Style>
+
+  <Style Selector="TextBlock.H2">
+    <Setter Property="FontFamily"    Value="Inter,Segoe UI Variable,Segoe UI,sans-serif"/>
+    <Setter Property="FontSize"      Value="11"/>
+    <Setter Property="FontWeight"    Value="SemiBold"/>
+    <Setter Property="Foreground"    Value="{StaticResource BrushTextSubtle}"/>
+    <Setter Property="LetterSpacing" Value="1.2"/>
+  </Style>
+
+  <Style Selector="TextBlock.Label">
+    <Setter Property="FontFamily"    Value="Inter,Segoe UI Variable,Segoe UI,sans-serif"/>
+    <Setter Property="FontSize"      Value="10"/>
+    <Setter Property="FontWeight"    Value="SemiBold"/>
+    <Setter Property="Foreground"    Value="{StaticResource BrushTextMuted}"/>
+    <Setter Property="LetterSpacing" Value="1.2"/>
+  </Style>
+
+  <Style Selector="TextBlock.Body">
+    <Setter Property="FontFamily" Value="Inter,Segoe UI Variable,Segoe UI,sans-serif"/>
+    <Setter Property="FontSize"   Value="12"/>
+    <Setter Property="Foreground" Value="{StaticResource BrushTextSubtle}"/>
+  </Style>
+
+  <Style Selector="TextBlock.MetricMedium">
+    <Setter Property="FontFamily" Value="Inter,Segoe UI Variable,Segoe UI,sans-serif"/>
+    <Setter Property="FontSize"   Value="20"/>
+    <Setter Property="FontWeight" Value="Bold"/>
+    <Setter Property="Foreground" Value="{StaticResource BrushText}"/>
+  </Style>
+
+  <Style Selector="TextBlock.AccentBlue">
+    <Setter Property="Foreground" Value="{StaticResource BrushAccentBlue}"/>
+  </Style>
+  <Style Selector="TextBlock.AccentLime">
+    <Setter Property="Foreground" Value="{StaticResource BrushAccentLime}"/>
+  </Style>
+  <Style Selector="TextBlock.AccentOrange">
+    <Setter Property="Foreground" Value="{StaticResource BrushAccentOrange}"/>
+  </Style>
+  <Style Selector="TextBlock.AccentRed">
+    <Setter Property="Foreground" Value="{StaticResource BrushAccentRed}"/>
+  </Style>
+  <Style Selector="TextBlock.AccentCyan">
+    <Setter Property="Foreground" Value="{StaticResource BrushAccentCyan}"/>
+  </Style>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       CARD STYLES
+  ═══════════════════════════════════════════════════════════════ -->
+  <Style Selector="Border.Card">
+    <Setter Property="Background"      Value="{StaticResource BrushSurface}"/>
+    <Setter Property="BorderBrush"     Value="{StaticResource BrushBorder}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="CornerRadius"    Value="14"/>
+    <Setter Property="Padding"         Value="20"/>
+    <Setter Property="BoxShadow"       Value="0 4 24 0 #14000000"/>
+    <Setter Property="Transitions">
+      <Transitions>
+        <BoxShadowsTransition Property="BoxShadow" Duration="0:0:0.25"/>
+      </Transitions>
+    </Setter>
+  </Style>
+  <Style Selector="Border.Card:pointerover">
+    <Setter Property="BoxShadow" Value="0 8 40 0 #2E3B82F6"/>
+  </Style>
+
+  <Style Selector="Border.KpiCard">
+    <Setter Property="Background"      Value="{StaticResource BrushSurface}"/>
+    <Setter Property="BorderBrush"     Value="{StaticResource BrushBorder}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="CornerRadius"    Value="14"/>
+    <Setter Property="Padding"         Value="18"/>
+    <Setter Property="BoxShadow"       Value="0 4 24 0 #14000000"/>
+    <Setter Property="Transitions">
+      <Transitions>
+        <BoxShadowsTransition Property="BoxShadow" Duration="0:0:0.25"/>
+      </Transitions>
+    </Setter>
+  </Style>
+  <Style Selector="Border.KpiCard:pointerover">
+    <Setter Property="BoxShadow" Value="0 8 40 0 #2E3B82F6"/>
+  </Style>
+
+  <Style Selector="Border.CompactCard">
+    <Setter Property="Background"      Value="{StaticResource BrushSurface}"/>
+    <Setter Property="BorderBrush"     Value="{StaticResource BrushBorder}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="CornerRadius"    Value="8"/>
+    <Setter Property="Padding"         Value="14,10"/>
+    <Setter Property="BoxShadow"       Value="0 2 8 0 #14000000"/>
+  </Style>
+
+  <Style Selector="Border.Shimmer">
+    <Setter Property="Background"   Value="{StaticResource BrushSurfaceLight}"/>
+    <Setter Property="CornerRadius" Value="14"/>
+    <Setter Property="Opacity"      Value="0.7"/>
+  </Style>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       BUTTON STYLES
+  ═══════════════════════════════════════════════════════════════ -->
+  <Style Selector="Button.Primary">
+    <Setter Property="Background"                 Value="#3B82F6"/>
+    <Setter Property="Foreground"                 Value="#F1F5F9"/>
+    <Setter Property="BorderThickness"            Value="0"/>
+    <Setter Property="CornerRadius"               Value="10"/>
+    <Setter Property="Padding"                    Value="16,10"/>
+    <Setter Property="FontFamily"                 Value="Inter,Segoe UI Variable,Segoe UI,sans-serif"/>
+    <Setter Property="FontSize"                   Value="13"/>
+    <Setter Property="FontWeight"                 Value="SemiBold"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Setter Property="Cursor"                     Value="Hand"/>
+  </Style>
+  <Style Selector="Button.Primary:pointerover /template/ ContentPresenter">
+    <Setter Property="Background" Value="#2563EB"/>
+  </Style>
+
+  <Style Selector="Button.Danger">
+    <Setter Property="Background"                 Value="#EF4444"/>
+    <Setter Property="Foreground"                 Value="#F1F5F9"/>
+    <Setter Property="BorderThickness"            Value="0"/>
+    <Setter Property="CornerRadius"               Value="10"/>
+    <Setter Property="Padding"                    Value="16,10"/>
+    <Setter Property="FontFamily"                 Value="Inter,Segoe UI Variable,Segoe UI,sans-serif"/>
+    <Setter Property="FontSize"                   Value="13"/>
+    <Setter Property="FontWeight"                 Value="SemiBold"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Setter Property="Cursor"                     Value="Hand"/>
+  </Style>
+  <Style Selector="Button.Danger:pointerover /template/ ContentPresenter">
+    <Setter Property="Background" Value="#DC2626"/>
+  </Style>
+
+  <Style Selector="Button.Ghost">
+    <Setter Property="Background"                 Value="Transparent"/>
+    <Setter Property="Foreground"                 Value="#3B82F6"/>
+    <Setter Property="BorderBrush"                Value="#3B82F6"/>
+    <Setter Property="BorderThickness"            Value="1"/>
+    <Setter Property="CornerRadius"               Value="10"/>
+    <Setter Property="Padding"                    Value="16,10"/>
+    <Setter Property="FontFamily"                 Value="Inter,Segoe UI Variable,Segoe UI,sans-serif"/>
+    <Setter Property="FontSize"                   Value="13"/>
+    <Setter Property="FontWeight"                 Value="SemiBold"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Setter Property="Cursor"                     Value="Hand"/>
+  </Style>
+  <Style Selector="Button.Ghost:pointerover /template/ ContentPresenter">
+    <Setter Property="Background" Value="#153B82F6"/>
+  </Style>
+
+  <Style Selector="Button.Lime">
+    <Setter Property="Background"                 Value="#84CC16"/>
+    <Setter Property="Foreground"                 Value="#0F172A"/>
+    <Setter Property="BorderThickness"            Value="0"/>
+    <Setter Property="CornerRadius"               Value="10"/>
+    <Setter Property="Padding"                    Value="16,10"/>
+    <Setter Property="FontFamily"                 Value="Inter,Segoe UI Variable,Segoe UI,sans-serif"/>
+    <Setter Property="FontSize"                   Value="13"/>
+    <Setter Property="FontWeight"                 Value="Bold"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Setter Property="Cursor"                     Value="Hand"/>
+  </Style>
+  <Style Selector="Button.Lime:pointerover /template/ ContentPresenter">
+    <Setter Property="Background" Value="#65A30D"/>
+  </Style>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       SIDEBAR NAV ICON TOGGLE BUTTON
+       Foreground is INHERITED by MaterialIcon child — no dual-icon hack needed.
+       Active  → Foreground="#3B82F6" + blue-tinted background
+       Inactive→ Foreground="#64748B" + transparent background
+       Hover   → Foreground="#94A3B8" + subtle highlight
+  ═══════════════════════════════════════════════════════════════ -->
+  <Style Selector="ToggleButton.NavIconBtn">
+    <Setter Property="Background"                 Value="Transparent"/>
+    <Setter Property="Foreground"                 Value="#64748B"/>
+    <Setter Property="BorderThickness"            Value="0"/>
+    <Setter Property="CornerRadius"               Value="10"/>
+    <Setter Property="Padding"                    Value="0"/>
+    <Setter Property="Width"                      Value="46"/>
+    <Setter Property="Height"                     Value="46"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Setter Property="VerticalContentAlignment"   Value="Center"/>
+    <Setter Property="Cursor"                     Value="Hand"/>
+    <Setter Property="Transitions">
+      <Transitions>
+        <BrushTransition Property="Foreground" Duration="0:0:0.15"/>
+      </Transitions>
+    </Setter>
+  </Style>
+  <Style Selector="ToggleButton.NavIconBtn:checked">
+    <Setter Property="Foreground" Value="#3B82F6"/>
+  </Style>
+  <Style Selector="ToggleButton.NavIconBtn:pointerover">
+    <Setter Property="Foreground" Value="#94A3B8"/>
+  </Style>
+  <Style Selector="ToggleButton.NavIconBtn /template/ ContentPresenter">
+    <Setter Property="Background"   Value="Transparent"/>
+    <Setter Property="CornerRadius" Value="10"/>
+  </Style>
+  <Style Selector="ToggleButton.NavIconBtn:checked /template/ ContentPresenter">
+    <Setter Property="Background"   Value="#1A3B82F6"/>
+    <Setter Property="CornerRadius" Value="10"/>
+  </Style>
+  <Style Selector="ToggleButton.NavIconBtn:pointerover /template/ ContentPresenter">
+    <Setter Property="Background"   Value="#0F334155"/>
+    <Setter Property="CornerRadius" Value="10"/>
+  </Style>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       TAB TOGGLE BUTTON
+  ═══════════════════════════════════════════════════════════════ -->
+  <Style Selector="ToggleButton.Tab">
+    <Setter Property="Background"                 Value="Transparent"/>
+    <Setter Property="Foreground"                 Value="#64748B"/>
+    <Setter Property="BorderThickness"            Value="0,0,0,2"/>
+    <Setter Property="BorderBrush"                Value="Transparent"/>
+    <Setter Property="CornerRadius"               Value="0"/>
+    <Setter Property="Padding"                    Value="16,12"/>
+    <Setter Property="FontFamily"                 Value="Inter,Segoe UI Variable,Segoe UI,sans-serif"/>
+    <Setter Property="FontSize"                   Value="13"/>
+    <Setter Property="FontWeight"                 Value="SemiBold"/>
+    <Setter Property="Cursor"                     Value="Hand"/>
+    <Setter Property="Transitions">
+      <Transitions>
+        <BrushTransition Property="Foreground"  Duration="0:0:0.2"/>
+        <BrushTransition Property="BorderBrush" Duration="0:0:0.2"/>
+      </Transitions>
+    </Setter>
+  </Style>
+  <Style Selector="ToggleButton.Tab:checked">
+    <Setter Property="Foreground"  Value="#3B82F6"/>
+    <Setter Property="BorderBrush" Value="#3B82F6"/>
+  </Style>
+  <Style Selector="ToggleButton.Tab /template/ ContentPresenter">
+    <Setter Property="Background" Value="Transparent"/>
+  </Style>
+  <Style Selector="ToggleButton.Tab:checked /template/ ContentPresenter">
+    <Setter Property="Background" Value="Transparent"/>
+  </Style>
+  <Style Selector="ToggleButton.Tab:pointerover /template/ ContentPresenter">
+    <Setter Property="Foreground" Value="#F1F5F9"/>
+  </Style>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       PROGRESS BAR (usage bars)
+  ═══════════════════════════════════════════════════════════════ -->
+  <Style Selector="ProgressBar.UsageBar">
+    <Setter Property="Height"                Value="6"/>
+    <Setter Property="CornerRadius"          Value="3"/>
+    <Setter Property="Background"            Value="#334155"/>
+    <Setter Property="Foreground"            Value="#3B82F6"/>
+    <Setter Property="HorizontalAlignment"   Value="Stretch"/>
+    <Setter Property="Minimum"               Value="0"/>
+    <Setter Property="Maximum"               Value="100"/>
+  </Style>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       SCROLLVIEWER
+  ═══════════════════════════════════════════════════════════════ -->
+  <Style Selector="ScrollViewer">
+    <Setter Property="AllowAutoHide" Value="True"/>
+  </Style>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       DATAGRID — dark overrides
+  ═══════════════════════════════════════════════════════════════ -->
+  <Style Selector="DataGrid">
+    <Setter Property="Background"          Value="Transparent"/>
+    <Setter Property="RowBackground"       Value="Transparent"/>
+    <Setter Property="BorderThickness"     Value="0"/>
+    <Setter Property="FontFamily"          Value="Inter,Segoe UI Variable,Segoe UI,sans-serif"/>
+    <Setter Property="FontSize"            Value="12"/>
+    <Setter Property="Foreground"          Value="#94A3B8"/>
+    <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+    <Setter Property="HeadersVisibility"   Value="Column"/>
+    <Setter Property="IsReadOnly"          Value="True"/>
+    <Setter Property="SelectionMode"       Value="Single"/>
+  </Style>
+  <Style Selector="DataGridColumnHeader">
+    <Setter Property="Background"      Value="Transparent"/>
+    <Setter Property="Foreground"      Value="#64748B"/>
+    <Setter Property="FontSize"        Value="10"/>
+    <Setter Property="FontWeight"      Value="SemiBold"/>
+    <Setter Property="Padding"         Value="8,6"/>
+    <Setter Property="BorderBrush"     Value="#2D3F55"/>
+    <Setter Property="BorderThickness" Value="0,0,0,1"/>
+  </Style>
+  <Style Selector="DataGridRow:pointerover /template/ Rectangle#BackgroundRectangle">
+    <Setter Property="Fill"    Value="#1A334155"/>
+    <Setter Property="Opacity" Value="1"/>
+  </Style>
+  <Style Selector="DataGridRow:selected /template/ Rectangle#BackgroundRectangle">
+    <Setter Property="Fill"    Value="#153B82F6"/>
+    <Setter Property="Opacity" Value="1"/>
+  </Style>
+  <Style Selector="DataGridCell">
+    <Setter Property="Padding"         Value="8,6"/>
+    <Setter Property="BorderThickness" Value="0"/>
+  </Style>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       SEARCH BOX
+  ═══════════════════════════════════════════════════════════════ -->
+  <Style Selector="TextBox.SearchBox">
+    <Setter Property="Background"      Value="#0D1B2B"/>
+    <Setter Property="Foreground"      Value="#F1F5F9"/>
+    <Setter Property="BorderBrush"     Value="#2D3F55"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="CornerRadius"    Value="8"/>
+    <Setter Property="Padding"         Value="12,9"/>
+    <Setter Property="FontFamily"      Value="Inter,Segoe UI Variable,Segoe UI,sans-serif"/>
+    <Setter Property="FontSize"        Value="12"/>
+    <Setter Property="CaretBrush"      Value="#3B82F6"/>
+  </Style>
+  <Style Selector="TextBox.SearchBox:focus /template/ Border#PART_BorderElement">
+    <Setter Property="BorderBrush"  Value="#3B82F6"/>
+    <Setter Property="BoxShadow"    Value="0 0 0 2 #303B82F6"/>
+  </Style>
+  <Style Selector="TextBox.SearchBox /template/ TextBlock#PART_Watermark">
+    <Setter Property="Foreground" Value="#475569"/>
+  </Style>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       SLIDER — dark theme overrides (fluent-compatible)
+  ═══════════════════════════════════════════════════════════════ -->
+  <Style Selector="Slider">
+    <Setter Property="Minimum"            Value="0"/>
+    <Setter Property="Maximum"            Value="100"/>
+    <Setter Property="Foreground"         Value="#3B82F6"/>
+  </Style>
+  <Style Selector="Slider /template/ Track">
+    <Setter Property="Height" Value="4"/>
+  </Style>
+  <Style Selector="Slider /template/ Border#TrackBackground">
+    <Setter Property="Background"   Value="#2D3F55"/>
+    <Setter Property="CornerRadius" Value="2"/>
+    <Setter Property="Height"       Value="4"/>
+  </Style>
+  <Style Selector="Slider /template/ Border#PART_SelectionRange">
+    <Setter Property="Background"   Value="#3B82F6"/>
+    <Setter Property="CornerRadius" Value="2"/>
+    <Setter Property="Height"       Value="4"/>
+  </Style>
+  <Style Selector="Slider /template/ Thumb">
+    <Setter Property="Width"           Value="16"/>
+    <Setter Property="Height"          Value="16"/>
+    <Setter Property="Background"      Value="#3B82F6"/>
+    <Setter Property="BorderBrush"     Value="#1E3A5F"/>
+    <Setter Property="BorderThickness" Value="2"/>
+  </Style>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       WINDOW CONTROL BUTTONS
+  ═══════════════════════════════════════════════════════════════ -->
+  <Style Selector="Button.WinCtrl:pointerover /template/ ContentPresenter">
+    <Setter Property="Background" Value="#1A334155"/>
+  </Style>
+  <Style Selector="Button.WinClose:pointerover /template/ ContentPresenter">
+    <Setter Property="Background" Value="#C0EF4444"/>
+  </Style>
+  <Style Selector="Button.WinClose:pointerover /template/ ContentPresenter#PART_ContentPresenter TextBlock">
+    <Setter Property="Foreground" Value="White"/>
+  </Style>
+
+</Styles>
