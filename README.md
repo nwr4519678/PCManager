@@ -92,14 +92,21 @@ dotnet run --project PCManager.UI
 ---
 
 ### Summary of Commands
-| Step | Action | Command |
-| :--- | :--- | :--- |
-| **1** | **Database** | `docker-compose up -d` |
-| **2** | **Migrations** | `dotnet ef database update --project PCManager.Infrastructure --startup-project PCManager.Backend` |
-| **3** | **Backend** | `dotnet run --project PCManager.Backend` |
-| **4** | **Frontend** | `dotnet run --project PCManager.UI` |
+| Step | Action                                                                    | Command                                                                                                                                                    |
+| :--- | :------------------------------------------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1    | I**nstall Dotnet 10**                                                     | `winget install Microsoft.DotNet.SDK.10`                                                                                                                   |
+| 2    | **SQL Server Image For Docker**                                           | `docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=YourStrong@Password123" -p 1433:1433 --name sql_server -d mcr.microsoft.com/mssql/server:2022-latest` |
+| 3    | **Clear all local NuGet caches (http-cache, global-packages, temp)**      | `dotnet nuget locals all --clear`<br>                                                                                                                      |
+| 4    | **Clean the specific projects**<br>                                       | `dotnet clean .\PCManager.Infrastructure\`<br>`dotnet clean .\PCManager.Backend\`                                                                          |
+| 5    | **Force a clean restore ignoring any previous locally cached states**<br> | `dotnet restore .\PCManager.sln --force`<br>                                                                                                               |
+| 6    | **Direct Package Fix**                                                    | `dotnet add .\PCManager.Infrastructure\PCManager.Infrastructure.csproj package Microsoft.CodeAnalysis.Analyzers --version 3.3.4`<br>                       |
+| 7    | **Force a clean restore without touching local caches**<br>               | `dotnet restore --no-cache`<br>                                                                                                                            |
+| 8    | **Build the entire solution to generate fresh assemblies**<br>            | `dotnet build`<br>                                                                                                                                         |
+| 9    | **Database**                                                              | `docker-compose up -d`                                                                                                                                     |
+| 10   | **Migrations**                                                            | `dotnet ef database update --project PCManager.Infrastructure --startup-project PCManager.Backend`                                                         |
+| 11   | **Backend**                                                               | `dotnet run --project PCManager.Backend`                                                                                                                   |
+| 12   | **Frontend**                                                              | `dotnet run --project PCManager.UI`                                                                                                                        |
 
-**Would you like me to run the database migrations for you now?**
 
 - CORS ordering fixed and console startup message added in `Program.cs`.
 - `OSService` CPU sampling improved to use `PerformanceCounter` on Windows and fallback logging.
