@@ -1,0 +1,7 @@
+.vs/
+[Bb]in/
+[Ob]j/
+*.user
+*.suo
+*.vshost.*
+

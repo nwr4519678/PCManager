@@ -1,0 +1,12 @@
+D:\Projects_.net\PCManager\PCManager.Core\bin\Debug\net10.0\PCManager.Core.deps.json
+D:\Projects_.net\PCManager\PCManager.Core\bin\Debug\net10.0\PCManager.Core.dll
+D:\Projects_.net\PCManager\PCManager.Core\bin\Debug\net10.0\PCManager.Core.pdb
+D:\Projects_.net\PCManager\PCManager.Core\obj\Debug\net10.0\PCManager.Core.csproj.AssemblyReference.cache
+D:\Projects_.net\PCManager\PCManager.Core\obj\Debug\net10.0\PCManager.Core.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projects_.net\PCManager\PCManager.Core\obj\Debug\net10.0\PCManager.Core.AssemblyInfoInputs.cache
+D:\Projects_.net\PCManager\PCManager.Core\obj\Debug\net10.0\PCManager.Core.AssemblyInfo.cs
+D:\Projects_.net\PCManager\PCManager.Core\obj\Debug\net10.0\PCManager.Core.csproj.CoreCompileInputs.cache
+D:\Projects_.net\PCManager\PCManager.Core\obj\Debug\net10.0\PCManager.Core.dll
+D:\Projects_.net\PCManager\PCManager.Core\obj\Debug\net10.0\refint\PCManager.Core.dll
+D:\Projects_.net\PCManager\PCManager.Core\obj\Debug\net10.0\PCManager.Core.pdb
+D:\Projects_.net\PCManager\PCManager.Core\obj\Debug\net10.0\ref\PCManager.Core.dll

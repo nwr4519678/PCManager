@@ -1,0 +1,5 @@
+{
+  "ConnectionStrings": {
+    "Default": "Server=localhost,1433;Database=PCManagerDb;User Id=sa;Password=Your_password123;TrustServerCertificate=True;"
+  }
+}

@@ -1,0 +1,17 @@
+D:\Projects_.net\PCManager\PCManager.Infrastructure\bin\Debug\net10.0\PCManager.Infrastructure.deps.json
+D:\Projects_.net\PCManager\PCManager.Infrastructure\bin\Debug\net10.0\PCManager.Infrastructure.runtimeconfig.json
+D:\Projects_.net\PCManager\PCManager.Infrastructure\bin\Debug\net10.0\PCManager.Infrastructure.dll
+D:\Projects_.net\PCManager\PCManager.Infrastructure\bin\Debug\net10.0\PCManager.Infrastructure.pdb
+D:\Projects_.net\PCManager\PCManager.Infrastructure\bin\Debug\net10.0\PCManager.Core.dll
+D:\Projects_.net\PCManager\PCManager.Infrastructure\bin\Debug\net10.0\PCManager.Core.pdb
+D:\Projects_.net\PCManager\PCManager.Infrastructure\obj\Debug\net10.0\PCManager.Infrastructure.csproj.AssemblyReference.cache
+D:\Projects_.net\PCManager\PCManager.Infrastructure\obj\Debug\net10.0\PCManager.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projects_.net\PCManager\PCManager.Infrastructure\obj\Debug\net10.0\PCManager.Infrastructure.AssemblyInfoInputs.cache
+D:\Projects_.net\PCManager\PCManager.Infrastructure\obj\Debug\net10.0\PCManager.Infrastructure.AssemblyInfo.cs
+D:\Projects_.net\PCManager\PCManager.Infrastructure\obj\Debug\net10.0\PCManager.Infrastructure.csproj.CoreCompileInputs.cache
+D:\Projects_.net\PCManager\PCManager.Infrastructure\obj\Debug\net10.0\PCManage.2F9EE8AD.Up2Date
+D:\Projects_.net\PCManager\PCManager.Infrastructure\obj\Debug\net10.0\PCManager.Infrastructure.dll
+D:\Projects_.net\PCManager\PCManager.Infrastructure\obj\Debug\net10.0\refint\PCManager.Infrastructure.dll
+D:\Projects_.net\PCManager\PCManager.Infrastructure\obj\Debug\net10.0\PCManager.Infrastructure.pdb
+D:\Projects_.net\PCManager\PCManager.Infrastructure\obj\Debug\net10.0\PCManager.Infrastructure.genruntimeconfig.cache
+D:\Projects_.net\PCManager\PCManager.Infrastructure\obj\Debug\net10.0\ref\PCManager.Infrastructure.dll
