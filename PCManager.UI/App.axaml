@@ -1,11 +1,12 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
              x:Class="PCManager.UI.App"
              RequestedThemeVariant="Dark">
   <Application.Styles>
     <FluentTheme />
     <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
-    <!-- Material.Icons.Avalonia: no XAML include needed — namespace 'using:Material.Icons.Avalonia' in each view is sufficient -->
+    <materialIcons:MaterialIconStyles />
     <StyleInclude Source="avares://PCManager.UI/Styles/Styles.axaml"/>
   </Application.Styles>
 </Application>

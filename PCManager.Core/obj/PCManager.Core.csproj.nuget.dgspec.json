@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Projects_.net\\PCManager\\PCManager.Core\\PCManager.Core.csproj": {}
+    "C:\\PCManager-v1\\PCManager.Core\\PCManager.Core.csproj": {}
   },
   "projects": {
-    "D:\\Projects_.net\\PCManager\\PCManager.Core\\PCManager.Core.csproj": {
+    "C:\\PCManager-v1\\PCManager.Core\\PCManager.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Projects_.net\\PCManager\\PCManager.Core\\PCManager.Core.csproj",
+        "projectUniqueName": "C:\\PCManager-v1\\PCManager.Core\\PCManager.Core.csproj",
         "projectName": "PCManager.Core",
-        "projectPath": "D:\\Projects_.net\\PCManager\\PCManager.Core\\PCManager.Core.csproj",
-        "packagesPath": "C:\\Users\\Noureddine Osama\\.nuget\\packages\\",
-        "outputPath": "D:\\Projects_.net\\PCManager\\PCManager.Core\\obj\\",
+        "projectPath": "C:\\PCManager-v1\\PCManager.Core\\PCManager.Core.csproj",
+        "packagesPath": "C:\\Users\\lenovo\\.nuget\\packages\\",
+        "outputPath": "C:\\PCManager-v1\\PCManager.Core\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Noureddine Osama\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -26,7 +26,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {

@@ -10,3 +10,16 @@ D:\Projects_.net\PCManager\PCManager.Core\obj\Debug\net10.0\PCManager.Core.dll
 D:\Projects_.net\PCManager\PCManager.Core\obj\Debug\net10.0\refint\PCManager.Core.dll
 D:\Projects_.net\PCManager\PCManager.Core\obj\Debug\net10.0\PCManager.Core.pdb
 D:\Projects_.net\PCManager\PCManager.Core\obj\Debug\net10.0\ref\PCManager.Core.dll
+c:\PCManager-v1\PCManager.Core\bin\Debug\net10.0\PCManager.Core.deps.json
+c:\PCManager-v1\PCManager.Core\bin\Debug\net10.0\PCManager.Core.dll
+c:\PCManager-v1\PCManager.Core\bin\Debug\net10.0\PCManager.Core.pdb
+c:\PCManager-v1\PCManager.Core\obj\Debug\net10.0\PCManager.Core.csproj.AssemblyReference.cache
+c:\PCManager-v1\PCManager.Core\obj\Debug\net10.0\PCManager.Core.GeneratedMSBuildEditorConfig.editorconfig
+c:\PCManager-v1\PCManager.Core\obj\Debug\net10.0\PCManager.Core.AssemblyInfoInputs.cache
+c:\PCManager-v1\PCManager.Core\obj\Debug\net10.0\PCManager.Core.AssemblyInfo.cs
+c:\PCManager-v1\PCManager.Core\obj\Debug\net10.0\PCManager.Core.csproj.CoreCompileInputs.cache
+c:\PCManager-v1\PCManager.Core\obj\Debug\net10.0\PCManager.Core.sourcelink.json
+c:\PCManager-v1\PCManager.Core\obj\Debug\net10.0\PCManager.Core.dll
+c:\PCManager-v1\PCManager.Core\obj\Debug\net10.0\refint\PCManager.Core.dll
+c:\PCManager-v1\PCManager.Core\obj\Debug\net10.0\PCManager.Core.pdb
+c:\PCManager-v1\PCManager.Core\obj\Debug\net10.0\ref\PCManager.Core.dll
